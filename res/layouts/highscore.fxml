@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="bg-highscore" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.scenes.Highscore">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="320.0" layoutX="1.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/background_city.png" />
+         </image>
+      </ImageView>
+      <Text id="header" fill="WHITE" layoutX="57.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highscore" wrappingWidth="284.6796875">
+         <font>
+            <Font name="Courier New Bold" size="38.0" />
+         </font>
+      </Text>
+      <Button fx:id="backButton" layoutX="123.0" layoutY="272.0" mnemonicParsing="false" onAction="#onBackButtonPressed" text="Back">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Text id="header" layoutX="94.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score: 0" wrappingWidth="284.6796875">
+         <font>
+            <Font name="Courier New Bold" size="26.0" />
+         </font>
+      </Text>
+      <Text id="header" layoutX="-4.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date: 1.1.2017" textAlignment="CENTER" wrappingWidth="327.6796875">
+         <font>
+            <Font name="Courier New Bold" size="26.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

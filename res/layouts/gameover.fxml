@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="bg-gameover" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.scenes.GameOver">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="320.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/background_city.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="56.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Over">
+         <font>
+            <Font name="Courier New Bold" size="38.0" />
+         </font>
+      </Text>
+      <Button fx:id="mainmenubutton" layoutX="92.0" layoutY="230.0" mnemonicParsing="false" onAction="#onMainMenuButtonPressed" text="Main Menu">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Text layoutX="97.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score: 0">
+         <font>
+            <Font name="Courier New Bold" size="26.0" />
+         </font>
+      </Text>
+      <Button fx:id="exitButton" layoutX="121.0" layoutY="290.0" mnemonicParsing="false" onAction="#onExitButtonPressed" text="Exit">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>

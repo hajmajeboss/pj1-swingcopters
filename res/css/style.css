@@ -1,0 +1,33 @@
+#bg-main {
+-fx-background-color: #47c4e4;
+}
+
+#bg-highscore {
+-fx-background-color: #47c4e4;
+}
+
+#bg-game {
+-fx-background-color: #47c4e4;
+}
+
+#bg-gameover {
+-fx-background-color: #47c4e4;
+}
+
+
+#header {
+-fx-background-color: white;
+}
+
+.button {
+-fx-background-color: white;
+-fx-font-size: 20px;
+-fx-font-family: 'Courier New';
+-fx-font-weight: bold;
+}
+
+.button:hover {
+-fx-background-color: #8DC73F;
+-fx-color: white;
+}
+

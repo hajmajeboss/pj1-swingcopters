@@ -1,8 +1,9 @@
 package game.scenes;
 
 import game.characters.SwingCopter;
+import game.obstacles.Tourniquet;
+import game.world.City;
 import game.world.Cloud;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,17 +39,23 @@ public class Game extends Application {
         AnchorPane root = loader.load();
         Scene scene = new Scene(root);
 
-        //Characters
-        SwingCopter swingCopter = SwingCopter.getSwingCopter();
-        swingCopter.initialize();
-        root.getChildren().add(swingCopter);
-
         //World objects
+        root.getChildren().add(City.getCity());
         List<Cloud> clouds = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             clouds.add(new Cloud());
         }
         root.getChildren().addAll(clouds);
+        List<Tourniquet> tourniquets = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            tourniquets.add(new Tourniquet());
+        }
+        root.getChildren().addAll(tourniquets);
+
+        //Characters
+        SwingCopter swingCopter = SwingCopter.getSwingCopter();
+        swingCopter.initialize();
+        root.getChildren().add(swingCopter);
 
         //Mouse click handling
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -59,19 +66,8 @@ public class Game extends Application {
         });
 
         //Game loop
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                lifesText.setText("Lifes: " + swingCopter.getLifes());
-                scoreText.setText("Score: " + swingCopter.getScore());
-                for (Cloud cloud : clouds) {
-                    cloud.move();
-                }
-                swingCopter.move();
-
-            }
-        }.start();
+        GameLoop gameLoop = GameLoop.getGameLoop().initialize(tourniquets);
+        gameLoop.start();
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -81,12 +77,22 @@ public class Game extends Application {
         if (message.equals("death")) {
             try {
                 System.out.println("death");
+                GameLoop.getGameLoop().stop();
                 GameOver.getGameOver().start(Main.getPrimaryStage());
             }
             catch (Exception e) {
                 System.out.println("ex");
             }
         }
+        if (message.equals("out_of_bounds")) {
+                City.getCity().removeCity();
+        }
+    }
+
+    public void update() {
+        SwingCopter swingCopter = SwingCopter.getSwingCopter();
+        lifesText.setText("Lifes: " + swingCopter.getLifes());
+        scoreText.setText("Score: " + swingCopter.getScore());
     }
 
 }

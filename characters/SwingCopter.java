@@ -1,5 +1,6 @@
 package game.characters;
 
+import game.collectibles.Life;
 import game.scenes.Game;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,7 +28,7 @@ public class SwingCopter extends Pane {
         this.lifes = 2;
         this.score = 0;
         this.velocityX = 2;
-        this.velocityY = 0.5;
+        this.velocityY = 1;
         this.setTranslateX(140);
         this.setTranslateY(380);
         this.getChildren().add(swingCopter);
@@ -41,6 +42,7 @@ public class SwingCopter extends Pane {
         this.setTranslateX(this.getTranslateX() + velocityX);
         if (this.getTranslateY() <= 0) {
             this.setTranslateY(440);
+            Game.notify("out_of_bounds");
         }
         this.setTranslateY(this.getTranslateY() - velocityY);
         if (this.getTranslateX() <= 0 || this.getTranslateX() >= 320) {
@@ -57,6 +59,20 @@ public class SwingCopter extends Pane {
 
     public int getScore() {
         return this.score;
+    }
+
+    public void addScore() {
+        this.score++;
+    }
+
+    public void addLife() {
+        this.lifes++;
+    }
+
+    public void removeLife() {
+        this.reset();
+        this.lifes--;
+        this.checkLifes();
     }
 
     //Private methods

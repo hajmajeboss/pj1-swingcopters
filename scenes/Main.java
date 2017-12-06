@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Main.primaryStage = primaryStage;
         primaryStage.setTitle("Swing Copters");
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         MainMenu.getMainMenu().start(primaryStage);
     }
 

@@ -2,6 +2,7 @@ package game.scenes;
 
 import game.characters.SwingCopter;
 import game.obstacles.Tourniquet;
+import game.world.City;
 import game.world.Cloud;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
@@ -9,21 +10,30 @@ import javafx.geometry.Bounds;
 import java.util.List;
 
 public class GameLoop extends AnimationTimer {
-    private static GameLoop gameLoop = new GameLoop();
-    public static GameLoop getGameLoop() {return GameLoop.gameLoop;}
-    private GameLoop() {}
 
+    public GameLoop() {}
+
+    //Game objects
     SwingCopter swingCopter;
     List<Tourniquet> tourniquets;
+    List<Cloud> clouds;
 
-
+    //Game loop
     @Override
     public void handle(long now) {
         //Update score/life counters
-        Game.getGameScene().update();
+        SceneManager.getSceneManager().getGameScene().update();
+
+        //Moves city
+        City.getCity().move();
+
+        //Moves Swing Copter
+        swingCopter.move();
+
 
         //Collision Handling
         for (Tourniquet tourniquet : tourniquets) {
+            tourniquet.moveDown();
 
             if (    tourniquet.getCoin() != null &&
                     tourniquet.getCoin().getBoundsInParent().intersects(swingCopter.getBoundsInParent())) {
@@ -48,13 +58,14 @@ public class GameLoop extends AnimationTimer {
                 }
             }
         }
-        swingCopter.move();
-
     }
 
-    public GameLoop initialize(List<Tourniquet> tourniquets) {
+    //Initializes the loop
+    //@returns itself - chaining
+    public GameLoop initialize(List<Tourniquet> tourniquets, List<Cloud> clouds) {
         this.swingCopter = SwingCopter.getSwingCopter();
         this.tourniquets = tourniquets;
+        this.clouds = clouds;
         return this;
     }
 }

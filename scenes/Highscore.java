@@ -1,5 +1,6 @@
 package game.scenes;
 
+import game.stages.StageManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +10,6 @@ import javafx.stage.Stage;
 
 public class Highscore extends Application {
 
-    private static Highscore ourInstance = new Highscore();
-    public static Highscore getHighscore() {
-        return ourInstance;
-    }
     public  Highscore() {}
 
     @Override
@@ -22,8 +19,10 @@ public class Highscore extends Application {
         primaryStage.show();
     }
 
+    //Will be run after Back button is pressed
+    //@throws Exception
     @FXML
     public void onBackButtonPressed() throws Exception {
-        MainMenu.getMainMenu().start(Main.getPrimaryStage());
+        SceneManager.getSceneManager().getMainMenu().start(StageManager.getStageManager().getMainStage());
     }
 }

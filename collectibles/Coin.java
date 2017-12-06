@@ -5,7 +5,6 @@ import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import java.util.Random;
 
 public class Coin extends Pane {
     ImageView coin;

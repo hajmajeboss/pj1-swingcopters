@@ -1,5 +1,6 @@
 package game.scenes;
 
+import game.stages.StageManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,14 +10,7 @@ import javafx.stage.Stage;
 
 public class MainMenu extends Application{
 
-    //Getters
-    private static MainMenu ourInstance = new MainMenu();
-    public static MainMenu getMainMenu() {
-        return ourInstance;
-    }
-
-    //Singleton - had to use public constructor due to using FXML
-    public MainMenu() { }
+    public MainMenu() {}
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -25,19 +19,24 @@ public class MainMenu extends Application{
         primaryStage.show();
     }
 
-    //FXML Buttons Handlers
+    //WIll be run after Play button is pressed
+    //@throws Exception
     @FXML
     public void onPlayButtonPressed() throws Exception {
-        Game.getGameScene().start(Main.getPrimaryStage());
+        SceneManager.getSceneManager().getGameScene().start(StageManager.getStageManager().getMainStage());
     }
 
+    //Will be run after Highscore button is pressed
+    //@throws Exception
     @FXML
     public void onScoreButtonPressed() throws Exception {
-        Highscore.getHighscore().start(Main.getPrimaryStage());
+        SceneManager.getSceneManager().getHighscore().start(StageManager.getStageManager().getMainStage());
     }
 
+    //Will be run after Exit button is pressed
+    //@throws Exception
     @FXML
     public void onExitButtonPressed() throws Exception {
-        Main.getPrimaryStage().close();
+        StageManager.getStageManager().getMainStage().close();
     }
 }

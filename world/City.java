@@ -17,7 +17,12 @@ public class City extends Pane{
         this.getChildren().add(city);
     }
 
-    public void removeCity() {
-        this.getChildren().remove(city);
+    public void move() {
+        this.setTranslateY(this.getTranslateY() + 1);
     }
+
+    public void resetCity() {
+        this.setTranslateY(480-height);
+    }
+
 }

@@ -1,5 +1,6 @@
 package game.scenes;
 
+import game.stages.StageManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +10,6 @@ import javafx.stage.Stage;
 
 public class GameOver extends Application {
 
-    private static GameOver ourInstance = new GameOver();
-    public static GameOver getGameOver() {
-        return ourInstance;
-    }
     public GameOver() { }
 
     @Override
@@ -22,13 +19,18 @@ public class GameOver extends Application {
         primaryStage.show();
     }
 
+
+    //Will be run after Main Menu button is pressed
+    //@throws Exception
     @FXML
     public void onMainMenuButtonPressed() throws Exception{
-        MainMenu.getMainMenu().start(Main.getPrimaryStage());
+        SceneManager.getSceneManager().getMainMenu().start(StageManager.getStageManager().getMainStage());
     }
 
+    //Will be run after Exit button is pressed
+    //@throws Exception
     @FXML
     public void onExitButtonPressed() throws Exception {
-        Main.getPrimaryStage().close();
+        StageManager.getStageManager().getMainStage().close();
     }
 }

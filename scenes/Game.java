@@ -2,6 +2,7 @@ package game.scenes;
 
 import game.characters.SwingCopter;
 import game.obstacles.Tourniquet;
+import game.stages.StageManager;
 import game.world.City;
 import game.world.Cloud;
 import javafx.application.Application;
@@ -17,20 +18,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Game extends Application {
-    private static Game gameInstance = new Game();
-    public static Game getGameScene() {
-        return gameInstance ;
-    }
 
-   //Singleton - had to use public constructor due to using FXML
+   //FXML Objects
+    @FXML private Text lifesText;
+    @FXML private Text scoreText;
+
     public Game() {}
-
-    @FXML
-    private Text lifesText;
-    @FXML
-    private Text scoreText;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -66,29 +60,30 @@ public class Game extends Application {
         });
 
         //Game loop
-        GameLoop gameLoop = GameLoop.getGameLoop().initialize(tourniquets);
+        GameLoop gameLoop = SceneManager.getSceneManager().getGameLoop().initialize(tourniquets,clouds);
         gameLoop.start();
 
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public static void notify(String message) {
+    //Receives notifications about objects state
+    public void notify(String message) {
         if (message.equals("death")) {
             try {
-                System.out.println("death");
-                GameLoop.getGameLoop().stop();
-                GameOver.getGameOver().start(Main.getPrimaryStage());
+                SceneManager.getSceneManager().getGameLoop().stop();
+                Tourniquet.resetYIndex();
+                City.getCity().resetCity();
+               SceneManager.getSceneManager().getGameOver().start(StageManager.getStageManager().getMainStage());
             }
             catch (Exception e) {
                 System.out.println("ex");
             }
         }
-        if (message.equals("out_of_bounds")) {
-                City.getCity().removeCity();
-        }
     }
 
+
+    //Updates score and life indicator
     public void update() {
         SwingCopter swingCopter = SwingCopter.getSwingCopter();
         lifesText.setText("Lifes: " + swingCopter.getLifes());

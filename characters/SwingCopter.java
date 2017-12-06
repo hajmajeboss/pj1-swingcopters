@@ -1,7 +1,6 @@
 package game.characters;
 
-import game.collectibles.Life;
-import game.scenes.Game;
+import game.scenes.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,20 +14,23 @@ public class SwingCopter extends Pane {
 
     //Properties
     private ImageView swingCopter;
+    private Image swingLeft;
+    private Image swingRight;
     private double velocityX;
-    private double velocityY;
     private int lifes;
     private int score;
 
-    private SwingCopter() {}
+    private SwingCopter() {
+        swingLeft = new Image("game/res/img/swingcopter_left.png");
+        swingRight = new Image("game/res/img/swingcopter_right.png");
+    }
 
     // Public methods
     public void initialize() {
-        swingCopter = new ImageView(new Image("game/res/img/swing_ok.png"));
-        this.lifes = 2;
+        swingCopter = new ImageView(swingLeft);
+        this.lifes = 0;
         this.score = 0;
         this.velocityX = 2;
-        this.velocityY = 1;
         this.setTranslateX(140);
         this.setTranslateY(380);
         this.getChildren().add(swingCopter);
@@ -36,19 +38,26 @@ public class SwingCopter extends Pane {
 
     public void inverseVelocityX() {
         this.velocityX = this.velocityX * (-1);
+        this.setRotate(this.getRotate() * (-1));
+        if (swingCopter.getImage() == swingLeft) {
+            swingCopter.setImage(swingRight);
+        }
+        else {
+            swingCopter.setImage(swingLeft);
+        }
     }
 
     public void move() {
+        if (this.getRotate() == 0 ) {
+            this.setRotate(10);
+        }
         this.setTranslateX(this.getTranslateX() + velocityX);
         if (this.getTranslateY() <= 0) {
             this.setTranslateY(440);
-            Game.notify("out_of_bounds");
         }
-        this.setTranslateY(this.getTranslateY() - velocityY);
         if (this.getTranslateX() <= 0 || this.getTranslateX() >= 320) {
             this.reset();
             this.lifes--;
-            Game.notify("life_change");
             this.checkLifes();
         }
     }
@@ -87,11 +96,9 @@ public class SwingCopter extends Pane {
     }
 
     private void die()  {
-        swingCopter.setImage(new Image("game/res/img/swing_ko.png"));
         this.reset();
-        this.velocityY = 0;
         this.velocityX = 0;
-        Game.notify("death");
+        SceneManager.getSceneManager().getGameScene().notify("death");
     }
 
 }

@@ -8,33 +8,44 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Hammer extends Pane implements Obstacle {
+
     private ImageView hammer;
+    private Animation hammerRotate;
 
     public Hammer(int x, int y) {
-        hammer = new ImageView(new Image("game/res/img/hammer.png"));
         this.setTranslateX(x);
         this.setTranslateY(y);
+        hammer = new ImageView(new Image("game/res/img/hammer.png"));
         this.getChildren().add(hammer);
-        Animation hammerRotate = new HammerRotateAnim(this);
+
+        //Plays hammer rotate animation
+        hammerRotate  = new HammerRotateAnim(this);
         hammerRotate.play();
     }
 
+    //Setters
+    @Override
     public void setX (double x) {
         this.setTranslateX(x);
     }
 
+    @Override
     public void setY (double y) {
         this.setTranslateY(y);
     }
 
+    //Getters
+    @Override
     public double getY() {
         return this.getTranslateY();
     }
 
+    @Override
     public double getX() {
         return this.getTranslateX();
     }
 
+    @Override
     public Bounds getBounds() {
         return this.getBoundsInParent();
     }

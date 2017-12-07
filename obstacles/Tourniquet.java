@@ -1,8 +1,11 @@
 package game.obstacles;
 
 import game.collectibles.Coin;
+import game.collectibles.Collectible;
 import game.collectibles.Life;
+import game.stages.StageManager;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -10,75 +13,112 @@ import java.util.List;
 import java.util.Random;
 
 public class Tourniquet extends Pane {
-    private static int yIndex  = 180;
+    
+    //Constants
+    private static final int DISTANCE_BETWEEN_OBSTACLES = 180;
+    private static final int OBSTACLE_WIDTH = 120;
+    private static final int DISTANCE_BETWEEN_TOURNIQUETS = 240;
+    private static final int DISTANCE_OBSTACLE_HAMMER_Y = 25;
+    private static final int DISTANCE_OBSTACLE_LEFT_HAMMER_X = 38;
+    private static final int DISTANCE_OBSTACLE_RIGHT_HAMMER_X = 12;
+
+    //Index to generate tourniquets
+    private static int yIndex  = DISTANCE_BETWEEN_TOURNIQUETS;
+
+    //Obstacles
     private Obstacle left;
     private Obstacle right;
     private List<Obstacle> hammers;
-    private Life life;
-    private Coin coin;
+
+    //Collectibles
+    private Collectible life;
+    private Collectible coin;
+
+    //Generating tourniquets variables
     private Random rand;
     private int y;
     private int pivot;
 
+    //Will reset index to generate tourniquets
+    public static void resetYIndex() {
+        Tourniquet.yIndex = DISTANCE_BETWEEN_TOURNIQUETS;
+    }
+
+    //Constructor
     public Tourniquet() {
+
+        //Will set the pivot
         rand = new Random() ;
-        y = yIndex;
-        yIndex -= 240;
         pivot = rand.nextInt(60) *(-1);
+
+        //Will set the Y coordinate of the tourniquet
+        y = yIndex;
+        yIndex -= DISTANCE_BETWEEN_TOURNIQUETS;
+
+        //May generate a heart and add it to the layout
+        _generateHeart(y);
+
+        //Will generate a coin and add it to the layout
+        _generateCoin(y);
+
+        //Will generate obstacles
         left = new ObstacleLeft(pivot, y);
-        right = new ObstacleRight(pivot + 120 + 180, y);
+        right = new ObstacleRight(pivot + OBSTACLE_WIDTH + DISTANCE_BETWEEN_OBSTACLES, y);
         hammers = new ArrayList<>();
-        hammers.add(new Hammer(((int)left.getX()) + 120 - 38,  y+25));
-        hammers.add(new Hammer(((int)right.getX()) -12 , y+25));
+        hammers.add(new Hammer(((int)left.getX()) + OBSTACLE_WIDTH - DISTANCE_OBSTACLE_LEFT_HAMMER_X,  y+ DISTANCE_OBSTACLE_HAMMER_Y));
+        hammers.add(new Hammer(((int)right.getX()) - DISTANCE_OBSTACLE_RIGHT_HAMMER_X, y+DISTANCE_OBSTACLE_HAMMER_Y));
 
-        // May generate a heart
-        int heartProbability = rand.nextInt(5);
-        if (heartProbability == 2) {
-            life = new Life(145, rand.nextInt(350) + 40);
-            this.getChildren().add(life);
-        }
-        this.getChildren().addAll((Pane)left, (Pane)right);
-        this.getChildren().addAll((Pane)hammers.get(0), (Pane)hammers.get(1));
-
-        //Will generate a coin
-        this.coin = Coin.createCoin(this.pivot + 120 + 80, y-5);
-        this.getChildren().add(coin);
+        //Will add obstacles to the layout
+        this.getChildren().addAll((Node)left, (Node)right);
+        this.getChildren().addAll((Node)hammers.get(0), (Node)hammers.get(1));
 
     }
 
+    //Will move the tourniquet down to create dynamic parallax effect
     public void moveDown() {
-        if (left.getY() < 480) {
+
+        //Checks if tourniquet is in visible part of stage
+        if (left.getY() < StageManager.STAGE_HEIGHT) {
             left.setY(left.getY() + 1);
             right.setY(right.getY() + 1);
             if (coin != null) {
-                coin.setTranslateY(coin.getTranslateY() + 1);
+                coin.setY(coin.getY() + 1);
             }
             if (life != null) {
-                life.setTranslateY(life.getTranslateY() + 1);
+                life.setY(life.getY() + 1);
             }
             for (Obstacle hammer : hammers) {
                 hammer.setY(hammer.getY() + 1);
             }
         }
+        //Sets the tourniquet's objects position out of the visible part of stage if the upper condition is not met
         else {
-            left.setY(-10);
-            right.setY(-10);
+            left.setY(-25);
+            right.setY(-25);
             for (Obstacle hammer : hammers) {
-                hammer.setY(8);
+                hammer.setY(left.getY() + DISTANCE_OBSTACLE_HAMMER_Y);
             }
-            coin = Coin.createCoin(this.pivot + 120 + 80, (int)left.getY() - 5);
-            this.getChildren().add(coin);
+            _generateCoin((int)left.getY());
+            _generateHeart((int)left.getY());
         }
     }
 
-    public Life getHeart() {
-        return this.life;
+    //Generators
+    private void _generateHeart(int y) {
+        int heartProbability = rand.nextInt(10);
+        if (heartProbability == 1) {
+            life = new Life(this.pivot + OBSTACLE_WIDTH + (DISTANCE_BETWEEN_OBSTACLES / 2), y);
+            this.getChildren().add((Node)life);
+        }
     }
 
-    public Coin getCoin() {
-        return this.coin;
+    private void _generateCoin(int y) {
+        this.coin = new Coin(this.pivot + OBSTACLE_WIDTH + (DISTANCE_BETWEEN_OBSTACLES / 2), y);
+        this.getChildren().add((Node)coin);
+
     }
 
+    //Destructors
     public void removeHeart() {
         this.getChildren().remove(this.life);
         this.life = null;
@@ -87,6 +127,15 @@ public class Tourniquet extends Pane {
     public void removeCoin() {
         this.getChildren().remove(this.coin);
         this.coin = null;
+    }
+
+    //Getters
+    public Collectible getHeart() {
+        return this.life;
+    }
+
+    public Collectible getCoin() {
+        return this.coin;
     }
 
     public Bounds getLeftObstacleBounds() {
@@ -104,11 +153,6 @@ public class Tourniquet extends Pane {
         }
         return hammersBounds;
     }
-
-    public static void resetYIndex() {
-        Tourniquet.yIndex = 180;
-    }
-
 }
 
 

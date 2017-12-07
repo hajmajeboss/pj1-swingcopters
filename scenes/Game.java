@@ -24,6 +24,11 @@ public class Game extends Application {
     @FXML private Text lifesText;
     @FXML private Text scoreText;
 
+    //Game World Objects
+    List<Cloud> clouds;
+    List<Tourniquet> tourniquets;
+    SwingCopter swingCopter;
+
     public Game() {}
 
     @Override
@@ -35,19 +40,19 @@ public class Game extends Application {
 
         //World objects
         root.getChildren().add(City.getCity());
-        List<Cloud> clouds = new ArrayList<>();
+        clouds = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             clouds.add(new Cloud());
         }
         root.getChildren().addAll(clouds);
-        List<Tourniquet> tourniquets = new ArrayList<>();
+        tourniquets = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             tourniquets.add(new Tourniquet());
         }
         root.getChildren().addAll(tourniquets);
 
         //Characters
-        SwingCopter swingCopter = SwingCopter.getSwingCopter();
+        swingCopter = SwingCopter.getSwingCopter();
         swingCopter.initialize();
         root.getChildren().add(swingCopter);
 
@@ -71,23 +76,27 @@ public class Game extends Application {
     public void notify(String message) {
         if (message.equals("death")) {
             try {
+                reset();
                 SceneManager.getSceneManager().getGameLoop().stop();
-                Tourniquet.resetYIndex();
-                City.getCity().resetCity();
-               SceneManager.getSceneManager().getGameOver().start(StageManager.getStageManager().getMainStage());
+                SceneManager.getSceneManager().getGameOver().start(StageManager.getStageManager().getMainStage());
+                SceneManager.getSceneManager().resetGame();
             }
             catch (Exception e) {
-                System.out.println("ex");
+                System.out.println(e.getStackTrace());
             }
         }
     }
-
 
     //Updates score and life indicator
     public void update() {
         SwingCopter swingCopter = SwingCopter.getSwingCopter();
         lifesText.setText("Lifes: " + swingCopter.getLifes());
         scoreText.setText("Score: " + swingCopter.getScore());
+    }
+
+    public void reset() {
+        Tourniquet.resetYIndex();
+        City.getCity().resetCity();
     }
 
 }

@@ -44,4 +44,10 @@ public class SceneManager {
     public MainMenu getMainMenu() {
         return this.mainMenu;
     }
+
+    //Resets game after death
+    public void resetGame() {
+        this.gameLoop = new GameLoop();
+        this.gameScene = new Game();
+    }
 }

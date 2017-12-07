@@ -36,13 +36,13 @@ public class GameLoop extends AnimationTimer {
             tourniquet.moveDown();
 
             if (    tourniquet.getCoin() != null &&
-                    tourniquet.getCoin().getBoundsInParent().intersects(swingCopter.getBoundsInParent())) {
+                    tourniquet.getCoin().getBounds().intersects(swingCopter.getBoundsInParent())) {
                 tourniquet.removeCoin();
                 swingCopter.addScore();
             }
 
             if (    tourniquet.getHeart() != null &&
-                    tourniquet.getHeart().getBoundsInParent().intersects(swingCopter.getBoundsInParent())) {
+                    tourniquet.getHeart().getBounds().intersects(swingCopter.getBoundsInParent())) {
                 tourniquet.removeHeart();
                 swingCopter.addLife();
             }

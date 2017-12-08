@@ -13,8 +13,8 @@ public class Hammer extends Pane implements Obstacle {
     private Animation hammerRotate;
 
     public Hammer(int x, int y) {
-        this.setTranslateX(x);
-        this.setTranslateY(y);
+        this.setX(x);
+        this.setY(y);
         hammer = new ImageView(new Image("game/res/img/hammer.png"));
         this.getChildren().add(hammer);
 

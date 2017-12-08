@@ -29,10 +29,11 @@ public class Game extends Application {
     List<Tourniquet> tourniquets;
     SwingCopter swingCopter;
 
+    //Constructor
     public Game() {}
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage mainStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../res/layouts/game.fxml"));
         loader.setController(this);
         AnchorPane root = loader.load();
@@ -68,15 +69,15 @@ public class Game extends Application {
         GameLoop gameLoop = SceneManager.getSceneManager().getGameLoop().initialize(tourniquets,clouds);
         gameLoop.start();
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        mainStage.setScene(scene);
+        mainStage.show();
     }
 
     //Receives notifications about objects state
     public void notify(String message) {
         if (message.equals("death")) {
             try {
-                reset();
+                _reset();
                 SceneManager.getSceneManager().getGameLoop().stop();
                 SceneManager.getSceneManager().getGameOver().start(StageManager.getStageManager().getMainStage());
                 SceneManager.getSceneManager().resetGame();
@@ -94,9 +95,9 @@ public class Game extends Application {
         scoreText.setText("Score: " + swingCopter.getScore());
     }
 
-    public void reset() {
+    //Resets game loop objects
+    private void _reset() {
         Tourniquet.resetYIndex();
         City.getCity().resetCity();
     }
-
 }

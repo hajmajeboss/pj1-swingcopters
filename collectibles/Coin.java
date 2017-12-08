@@ -13,8 +13,8 @@ public class Coin extends Pane implements Collectible {
     private Animation coinFlip;
 
     public Coin(int x, int y) {
-        this.setTranslateY(y);
-        this.setTranslateX(x);
+        this.setY(y);
+        this.setX(x);
         coin = new ImageView(new Image("game/res/img/coin.png"));
         this.getChildren().add(coin);
 

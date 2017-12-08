@@ -10,8 +10,8 @@ public class Life extends Pane implements Collectible {
     private ImageView life;
 
     public Life(int x, int y) {
-        this.setTranslateX(x);
-        this.setTranslateY(y);
+        this.setX(x);
+        this.setY(y);
         life = new ImageView(new Image("game/res/img/heart.png"));
         this.getChildren().add(life);
     }

@@ -27,7 +27,6 @@ public class ObstacleLeft extends Pane implements Obstacle{
         this.setTranslateY(y);
     }
 
-
     //Getters
     @Override
     public double getY() {

@@ -11,49 +11,47 @@ import java.util.List;
 
 public class GameLoop extends AnimationTimer {
 
-    public GameLoop() {}
-
     //Game objects
     SwingCopter swingCopter;
+    City city;
     List<Tourniquet> tourniquets;
     List<Cloud> clouds;
 
-    //Game loop
+    public GameLoop() {}
+
+    //Handles the game loop
     @Override
     public void handle(long now) {
-        //Update score/life counters
+
+        //Updates score/life counters
         SceneManager.getSceneManager().getGameScene().update();
 
         //Moves city
-        City.getCity().move();
+        city.move();
 
         //Moves Swing Copter
         swingCopter.move();
 
-
-        //Collision Handling
         for (Tourniquet tourniquet : tourniquets) {
+
+            //Moves tourniquet
             tourniquet.moveDown();
 
-            if (    tourniquet.getCoin() != null &&
-                    tourniquet.getCoin().getBounds().intersects(swingCopter.getBoundsInParent())) {
+            //Checks if coin has been collected
+            if (tourniquet.getCoin() != null && tourniquet.getCoin().getBounds().intersects(swingCopter.getBoundsInParent())) {
                 tourniquet.removeCoin();
                 swingCopter.addScore();
             }
 
-            if (    tourniquet.getHeart() != null &&
-                    tourniquet.getHeart().getBounds().intersects(swingCopter.getBoundsInParent())) {
+            //Checks if heart has been collected
+            if (tourniquet.getHeart() != null && tourniquet.getHeart().getBounds().intersects(swingCopter.getBoundsInParent())) {
                 tourniquet.removeHeart();
                 swingCopter.addLife();
             }
 
-            if (tourniquet.getLeftObstacleBounds().intersects(swingCopter.getBoundsInParent()) ||
-                    tourniquet.getRightObstacleBounds().intersects(swingCopter.getBoundsInParent())) {
-                swingCopter.removeLife();
-            }
-
-            for (Bounds hammerBounds : tourniquet.getHammerBounds()) {
-                if (hammerBounds.intersects(swingCopter.getBoundsInParent())) {
+            //Checks collision with obstacle
+            for (Bounds obstacleBounds : tourniquet.getObstaclesBounds()) {
+                if (obstacleBounds.intersects(swingCopter.getBoundsInParent())) {
                     swingCopter.removeLife();
                 }
             }
@@ -61,9 +59,9 @@ public class GameLoop extends AnimationTimer {
     }
 
     //Initializes the loop
-    //@returns itself - chaining
     public GameLoop initialize(List<Tourniquet> tourniquets, List<Cloud> clouds) {
         this.swingCopter = SwingCopter.getSwingCopter();
+        this.city = City.getCity();
         this.tourniquets = tourniquets;
         this.clouds = clouds;
         return this;

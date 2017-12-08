@@ -17,6 +17,7 @@ public class SwingCopter extends Pane {
     //Constants
     private static final int SWING_WIDTH = 51;
     private static final int SWING_HEIGHT = 53;
+    private static final int DISTANCE_SWING_WINDOW = 100;
 
     //Images
     private ImageView swingCopter;
@@ -40,8 +41,8 @@ public class SwingCopter extends Pane {
         this.lifes = 0;
         this.score = 0;
         this.velocityX = 2;
-        this.setTranslateX(140);
-        this.setTranslateY(380);
+        this.setTranslateX(StageManager.STAGE_WIDTH / 2);
+        this.setTranslateY(StageManager.STAGE_HEIGHT - DISTANCE_SWING_WINDOW);
         this.getChildren().add(swingCopter);
     }
 
@@ -70,7 +71,6 @@ public class SwingCopter extends Pane {
         }
     }
 
-
     //Getters
     public int getLifes() {
         return this.lifes;
@@ -89,7 +89,7 @@ public class SwingCopter extends Pane {
         this.lifes++;
     }
 
-    //Destructors
+    //Removes life
     public void removeLife() {
         _reset();
         this.lifes--;
@@ -112,8 +112,8 @@ public class SwingCopter extends Pane {
 
     //Resets the character's position
     private void _reset() {
-        this.setTranslateX(140);
-        this.setTranslateY(this.getTranslateY() - SWING_HEIGHT*2);
+        this.setTranslateX(StageManager.STAGE_WIDTH / 2);
+        this.setTranslateY(this.getTranslateY() - (SWING_HEIGHT * 2));
         this.score--;
     }
 

@@ -118,7 +118,7 @@ public class Tourniquet extends Pane {
 
     }
 
-    //Destructors
+    //Removers
     public void removeHeart() {
         this.getChildren().remove(this.life);
         this.life = null;
@@ -138,20 +138,14 @@ public class Tourniquet extends Pane {
         return this.coin;
     }
 
-    public Bounds getLeftObstacleBounds() {
-        return this.left.getBounds();
-    }
-
-    public Bounds getRightObstacleBounds() {
-        return this.right.getBounds();
-    }
-
-    public List<Bounds> getHammerBounds() {
-        List<Bounds> hammersBounds = new ArrayList<>();
+    public List<Bounds> getObstaclesBounds() {
+        List<Bounds> obstacleBounds = new ArrayList<>();
+        obstacleBounds.add(left.getBounds());
+        obstacleBounds.add(right.getBounds());
         for (Obstacle hammer : this.hammers) {
-            hammersBounds.add(hammer.getBounds());
+            obstacleBounds.add(hammer.getBounds());
         }
-        return hammersBounds;
+        return obstacleBounds;
     }
 }
 

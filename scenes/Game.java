@@ -1,6 +1,8 @@
 package game.scenes;
 
 import game.characters.SwingCopter;
+import game.control.LastScore;
+import game.control.ScoreManager;
 import game.obstacles.Tourniquet;
 import game.stages.StageManager;
 import game.world.City;
@@ -9,6 +11,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -29,8 +32,16 @@ public class Game extends Application {
     List<Tourniquet> tourniquets;
     SwingCopter swingCopter;
 
+    //Properties
+    int score;
+    int lifes;
+
     //Constructor
-    public Game() {}
+    public Game(int score, int lifes) {
+        this.score = score;
+        this.lifes = lifes;
+        System.out.println(score);
+    }
 
     @Override
     public void start(Stage mainStage) throws Exception{
@@ -38,6 +49,10 @@ public class Game extends Application {
         loader.setController(this);
         AnchorPane root = loader.load();
         Scene scene = new Scene(root);
+
+        //Removes texts that will be added later to simulate missing z-index property
+        root.getChildren().remove(lifesText);
+        root.getChildren().remove(scoreText);
 
         //World objects
         root.getChildren().add(City.getCity());
@@ -54,8 +69,12 @@ public class Game extends Application {
 
         //Characters
         swingCopter = SwingCopter.getSwingCopter();
-        swingCopter.initialize();
+        swingCopter.initialize(score,lifes);
         root.getChildren().add(swingCopter);
+
+        //Adding texts to front of the scene
+        root.getChildren().add(lifesText);
+        root.getChildren().add(scoreText);
 
         //Mouse click handling
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -80,10 +99,21 @@ public class Game extends Application {
                 _reset();
                 SceneManager.getSceneManager().getGameLoop().stop();
                 SceneManager.getSceneManager().getGameOver().start(StageManager.getStageManager().getMainStage());
-                SceneManager.getSceneManager().resetGame();
+                SceneManager.getSceneManager().resetGame(0,0);
             }
             catch (Exception e) {
                 System.out.println(e.getStackTrace());
+            }
+        }
+        if (message.equals("life_lost")) {
+            try {
+                _reset();
+                SceneManager.getSceneManager().getGameLoop().stop();
+                SceneManager.getSceneManager().getDeathScene().start(StageManager.getStageManager().getMainStage());
+                LastScore lastScore = ScoreManager.getScoreManager().getScore();
+                SceneManager.getSceneManager().resetGame(lastScore.getScore(), lastScore.getLifes());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -91,8 +121,8 @@ public class Game extends Application {
     //Updates score and life indicator
     public void update() {
         SwingCopter swingCopter = SwingCopter.getSwingCopter();
-        lifesText.setText("Lifes: " + swingCopter.getLifes());
-        scoreText.setText("Score: " + swingCopter.getScore());
+        lifesText.setText("Extra life: " + swingCopter.getLifes());
+        scoreText.setText(Integer.toString(swingCopter.getScore()));
     }
 
     //Resets game loop objects
@@ -100,4 +130,5 @@ public class Game extends Application {
         Tourniquet.resetYIndex();
         City.getCity().resetCity();
     }
+
 }

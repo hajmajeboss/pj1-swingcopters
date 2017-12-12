@@ -8,29 +8,34 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane id="bg-gameover" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.scenes.GameOver">
+<AnchorPane id="bg-gameover" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="150.0" fitWidth="320.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/background_city.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="56.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Over">
+      <Text cache="true" cacheHint="SPEED" fill="WHITE" layoutY="134.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="5.0" text="Game Over" textAlignment="CENTER" wrappingWidth="320.0">
          <font>
-            <Font name="Courier New Bold" size="38.0" />
+            <Font name="Impact" size="48.0" />
          </font>
       </Text>
-      <Button fx:id="mainmenubutton" layoutX="92.0" layoutY="230.0" mnemonicParsing="false" onAction="#onMainMenuButtonPressed" text="Main Menu">
+      <Button fx:id="mainmenubutton" layoutX="97.0" layoutY="240.0" mnemonicParsing="false" onAction="#onMainMenuButtonPressed" text="MAIN MENU">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Text layoutX="97.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score: 0">
+      <Text fx:id="scoreText" cache="true" cacheHint="SPEED" fill="WHITE" layoutY="187.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="3.0" text="Score: 0" textAlignment="CENTER" wrappingWidth="320.0">
          <font>
-            <Font name="Courier New Bold" size="26.0" />
+            <Font name="Impact" size="32.0" />
          </font>
       </Text>
-      <Button fx:id="exitButton" layoutX="121.0" layoutY="290.0" mnemonicParsing="false" onAction="#onExitButtonPressed" text="Exit">
+      <Text fx:id="newHighScoreText" cache="true" cacheHint="SPEED" fill="RED" layoutX="7.0" layoutY="217.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="2.0" text="NEW HIGHSCORE!" textAlignment="CENTER" visible="false" wrappingWidth="320.0">
+         <font>
+            <Font name="Impact" size="16.0" />
+         </font>
+      </Text>
+      <Button fx:id="exitButton" layoutX="127.0" layoutY="300.0" mnemonicParsing="false" onAction="#onExitButtonPressed" prefHeight="45.0" prefWidth="77.0" text="EXIT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

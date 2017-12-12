@@ -47,30 +47,12 @@ public class Tourniquet extends Pane {
     //Constructor
     public Tourniquet() {
 
-        //Will set the pivot
-        rand = new Random() ;
-        pivot = rand.nextInt(60) *(-1);
-
         //Will set the Y coordinate of the tourniquet
         y = yIndex;
         yIndex -= DISTANCE_BETWEEN_TOURNIQUETS;
 
-        //May generate a heart and add it to the layout
-        _generateHeart(y);
-
-        //Will generate a coin and add it to the layout
-        _generateCoin(y);
-
-        //Will generate obstacles
-        left = new ObstacleLeft(pivot, y);
-        right = new ObstacleRight(pivot + OBSTACLE_WIDTH + DISTANCE_BETWEEN_OBSTACLES, y);
-        hammers = new ArrayList<>();
-        hammers.add(new Hammer(((int)left.getX()) + OBSTACLE_WIDTH - DISTANCE_OBSTACLE_LEFT_HAMMER_X,  y+ DISTANCE_OBSTACLE_HAMMER_Y));
-        hammers.add(new Hammer(((int)right.getX()) - DISTANCE_OBSTACLE_RIGHT_HAMMER_X, y+DISTANCE_OBSTACLE_HAMMER_Y));
-
-        //Will add obstacles to the layout
-        this.getChildren().addAll((Node)left, (Node)right);
-        this.getChildren().addAll((Node)hammers.get(0), (Node)hammers.get(1));
+        //Will initialize tourniquet obstacles and collectibles and add them to the layout
+        _initialize(y);
 
     }
 
@@ -91,15 +73,11 @@ public class Tourniquet extends Pane {
                 hammer.setY(hammer.getY() + 1);
             }
         }
-        //Sets the tourniquet's objects position out of the visible part of stage if the upper condition is not met
+        //Will reinitialize the tourniquet out of the stage if the upper condition is not met
         else {
-            left.setY(-25);
-            right.setY(-25);
-            for (Obstacle hammer : hammers) {
-                hammer.setY(left.getY() + DISTANCE_OBSTACLE_HAMMER_Y);
-            }
-            _generateCoin((int)left.getY());
-            _generateHeart((int)left.getY());
+            getChildren().removeAll((Node)left, (Node)right);
+            getChildren().removeAll((Node)hammers.get(0), (Node)hammers.get(1));
+            _initialize(-25);
         }
     }
 
@@ -115,6 +93,31 @@ public class Tourniquet extends Pane {
     private void _generateCoin(int y) {
         this.coin = new Coin(this.pivot + OBSTACLE_WIDTH + (DISTANCE_BETWEEN_OBSTACLES / 2), y);
         this.getChildren().add((Node)coin);
+
+    }
+
+    private void _initialize(int y) {
+
+        //Will set the pivot
+        rand = new Random() ;
+        pivot = rand.nextInt(60) *(-1);
+
+        //Will generate obstacles
+        left = new ObstacleLeft(pivot, y);
+        right = new ObstacleRight(pivot + OBSTACLE_WIDTH + DISTANCE_BETWEEN_OBSTACLES, y);
+        hammers = new ArrayList<>();
+        hammers.add(new Hammer(((int)left.getX()) + OBSTACLE_WIDTH - DISTANCE_OBSTACLE_LEFT_HAMMER_X,  y+ DISTANCE_OBSTACLE_HAMMER_Y));
+        hammers.add(new Hammer(((int)right.getX()) - DISTANCE_OBSTACLE_RIGHT_HAMMER_X, y+DISTANCE_OBSTACLE_HAMMER_Y));
+
+        //May generate a heart and add it to the layout
+        _generateHeart(y);
+
+        //Will generate a coin and add it to the layout
+        _generateCoin(y);
+
+        //Will add obstacles to the layout
+        this.getChildren().addAll((Node)left, (Node)right);
+        this.getChildren().addAll((Node)hammers.get(0), (Node)hammers.get(1));
 
     }
 

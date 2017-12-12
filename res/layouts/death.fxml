@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="bg-gameover" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="320.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/background_city.png" />
+         </image>
+      </ImageView>
+      <Text cache="true" cacheHint="SPEED" fill="WHITE" layoutY="134.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="5.0" text="You died!" textAlignment="CENTER" wrappingWidth="320.0">
+         <font>
+            <Font name="Impact" size="48.0" />
+         </font>
+      </Text>
+      <Button fx:id="continueButton" layoutX="97.0" layoutY="292.0" mnemonicParsing="false" onAction="#onContinueButtonPressed" text="CONTINUE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Text fx:id="scoreText" cache="true" cacheHint="SPEED" fill="WHITE" layoutY="203.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="3.0" text="Score: 0" textAlignment="CENTER" wrappingWidth="320.0">
+         <font>
+            <Font name="Impact" size="32.0" />
+         </font>
+      </Text>
+      <Text fx:id="lifesText" cache="true" cacheHint="SPEED" fill="WHITE" layoutY="252.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="3.0" text="Extra life: 0" textAlignment="CENTER" wrappingWidth="320.0">
+         <font>
+            <Font name="Impact" size="32.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

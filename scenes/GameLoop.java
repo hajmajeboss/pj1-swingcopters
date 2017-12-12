@@ -1,6 +1,7 @@
 package game.scenes;
 
 import game.characters.SwingCopter;
+import game.collectibles.Coin;
 import game.obstacles.Tourniquet;
 import game.world.City;
 import game.world.Cloud;
@@ -39,12 +40,14 @@ public class GameLoop extends AnimationTimer {
 
             //Checks if coin has been collected
             if (tourniquet.getCoin() != null && tourniquet.getCoin().getBounds().intersects(swingCopter.getBoundsInParent())) {
+                tourniquet.getCoin().playSound();
                 tourniquet.removeCoin();
                 swingCopter.addScore();
             }
 
             //Checks if heart has been collected
             if (tourniquet.getHeart() != null && tourniquet.getHeart().getBounds().intersects(swingCopter.getBoundsInParent())) {
+                tourniquet.getHeart().playSound();
                 tourniquet.removeHeart();
                 swingCopter.addLife();
             }

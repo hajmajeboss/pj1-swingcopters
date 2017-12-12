@@ -1,11 +1,19 @@
 package game.characters;
 
+import game.control.DatedScore;
+import game.control.ScoreManager;
+import game.control.SoundManager;
 import game.scenes.SceneManager;
 import game.stages.StageManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 
+import javax.print.attribute.standard.Media;
+
+//TODO helicopter movement
+//TODO death when has extra life - restart
 public class SwingCopter extends Pane {
 
     //Singleton pattern - static instance of itself
@@ -18,6 +26,11 @@ public class SwingCopter extends Pane {
     private static final int SWING_WIDTH = 51;
     private static final int SWING_HEIGHT = 53;
     private static final int DISTANCE_SWING_WINDOW = 100;
+
+    //Sounds
+    private MediaPlayer lifeLost;
+    private MediaPlayer fail;
+    private MediaPlayer success;
 
     //Images
     private ImageView swingCopter;
@@ -33,13 +46,16 @@ public class SwingCopter extends Pane {
     private SwingCopter() {
         swingLeft = new Image("game/res/img/swingcopter_left.png");
         swingRight = new Image("game/res/img/swingcopter_right.png");
+        lifeLost = SoundManager.getSoundManager().getLifeLost();
+        fail = SoundManager.getSoundManager().getFail();
+        success = SoundManager.getSoundManager().getSuccess();
     }
 
     //Initializes the character
-    public void initialize() {
+    public void initialize(int score, int lifes) {
         swingCopter = new ImageView(swingLeft);
-        this.lifes = 0;
-        this.score = 0;
+        this.lifes = lifes;
+        this.score = score;
         this.velocityX = 2;
         this.setTranslateX(StageManager.STAGE_WIDTH / 2);
         this.setTranslateY(StageManager.STAGE_HEIGHT - DISTANCE_SWING_WINDOW);
@@ -69,6 +85,7 @@ public class SwingCopter extends Pane {
             this.lifes--;
             this._checkLifes();
         }
+
     }
 
     //Getters
@@ -81,9 +98,7 @@ public class SwingCopter extends Pane {
     }
 
     //Adders
-    public void addScore() {
-        this.score++;
-    }
+    public void addScore() { this.score++; }
 
     public void addLife() {
         this.lifes++;
@@ -91,9 +106,9 @@ public class SwingCopter extends Pane {
 
     //Removes life
     public void removeLife() {
-        _reset();
         this.lifes--;
         _checkLifes();
+
     }
 
     //Checks if character is still alive
@@ -101,20 +116,51 @@ public class SwingCopter extends Pane {
         if (this.lifes < 0) {
             _die();
         }
+        else {
+            _loseLife();
+        }
+    }
+
+    private void _loseLife() {
+        lifeLost.stop();
+        lifeLost.play();
+        ScoreManager.getScoreManager().saveScore(this.score, this.lifes);
+        _reset();
+        this.velocityX = 0;
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        SceneManager.getSceneManager().getGameScene().notify("life_lost");
     }
 
     //Kills the character and notifies game of its death
     private void _die()  {
+        ScoreManager.getScoreManager().saveScore(this.score, 0);
+        DatedScore highscore = ScoreManager.getScoreManager().getHighScore();
+        if (this.score > highscore.getScore()) {
+            success.stop();
+            success.play();
+            ScoreManager.getScoreManager().saveHighScore(this.score);
+        }
+        else {
+            fail.stop();
+            fail.play();
+        }
         _reset();
         this.velocityX = 0;
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SceneManager.getSceneManager().getGameScene().notify("death");
     }
 
-    //Resets the character's position
+    //Resets the character's position out of scene
     private void _reset() {
-        this.setTranslateX(StageManager.STAGE_WIDTH / 2);
-        this.setTranslateY(this.getTranslateY() - (SWING_HEIGHT * 2));
-        this.score--;
+        this.setTranslateY(-1000);
     }
 
 }

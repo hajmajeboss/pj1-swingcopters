@@ -8,4 +8,5 @@ public interface Collectible {
     double getX();
     double getY();
     Bounds getBounds();
+    void playSound();
 }
